@@ -9,5 +9,5 @@ CREATE TABLE restaurants (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (owner_id) REFERENCES restaurant_owner(id)
+    FOREIGN KEY (owner_id) REFERENCES restaurant_owner(id) ON DELETE CASCADE
 )

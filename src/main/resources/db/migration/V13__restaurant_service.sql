@@ -1,9 +1,6 @@
-CREATE TABLE restaurant_menu (
+CREATE TABLE restaurant_services(
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(25) NOT NULL,
-    category VARCHAR(25) NOT NULL,
-    price DECIMAL(10,2) NOT NULL,
-    image_link VARCHAR(50),
+    service VARCHAR(50) NOT NULL,
 
     restaurant_variant_id BIGINT NOT NULL,
 

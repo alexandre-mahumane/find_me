@@ -3,13 +3,13 @@ CREATE TABLE restaurant_variants (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
 
     name VARCHAR(50) NOT NULL,
-    location VARCHAR(50) NOT NULL UNIQUE,
     type VARCHAR(50) NOT NULL,
 
     restaurant_id BIGINT NOT NULL,
-
+    restaurant_location_id BIGINT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (restaurant_id) REFERENCES restaurants(id)
+    FOREIGN KEY (restaurant_id) REFERENCES restaurants(id)  ON DELETE CASCADE
+
 )

@@ -1,15 +1,15 @@
-CREATE TABLE restaurant_menu (
+CREATE TABLE restaurant_location (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(25) NOT NULL,
-    category VARCHAR(25) NOT NULL,
-    price DECIMAL(10,2) NOT NULL,
-    image_link VARCHAR(50),
+    city VARCHAR(50) NOT NULL,
+    avenue VARCHAR(50) NOT NULL,
+    street_number BIGINT NOT NULL,
 
+    latitude DECIMAL(10,2),
+    longitude DECIMAL(10,2),
     restaurant_variant_id BIGINT NOT NULL,
-
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
     FOREIGN KEY (restaurant_variant_id) REFERENCES restaurant_variants(id) ON DELETE CASCADE
+
 )
