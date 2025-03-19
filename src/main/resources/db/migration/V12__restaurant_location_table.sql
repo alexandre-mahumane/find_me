@@ -6,7 +6,7 @@ CREATE TABLE restaurant_location (
 
     latitude DECIMAL(10,2),
     longitude DECIMAL(10,2),
-    restaurant_variant_id BIGINT NOT NULL,
+    restaurant_variant_id BIGINT,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

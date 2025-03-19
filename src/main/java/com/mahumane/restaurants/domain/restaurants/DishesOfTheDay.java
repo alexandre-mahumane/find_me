@@ -22,10 +22,10 @@ public class DishesOfTheDay {
 
     @OneToOne
     @JoinColumn(name = "menu_id")
-    private Menu menuId;
+    private Menu menu;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_variant_id")
-    private RestaurantVariants restaurantVariantsId;
+    private RestaurantVariants restaurantVariants;
 
 }

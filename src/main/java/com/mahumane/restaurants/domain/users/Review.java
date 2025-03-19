@@ -26,9 +26,9 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "restaurant_variant_id")
-    private RestaurantVariants restaurantVariantsId;
+    private RestaurantVariants restaurantVariants;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
 }

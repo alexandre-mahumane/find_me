@@ -39,13 +39,11 @@ public class Books {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
 
     @OneToOne
     @JoinColumn(name = "restaurant_variant_id", nullable = false)
     private RestaurantVariants restaurantVariants;
 
-    @OneToOne
-    @JoinColumn(name = "table_id", nullable = false)
-    private Tables tablesId;
+
 }

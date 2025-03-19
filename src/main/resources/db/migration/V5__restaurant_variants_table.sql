@@ -5,7 +5,7 @@ CREATE TABLE restaurant_variants (
     name VARCHAR(50) NOT NULL,
     type VARCHAR(50) NOT NULL,
 
-    restaurant_id BIGINT NOT NULL,
+    main_restaurant_id BIGINT NOT NULL,
     restaurant_location_id BIGINT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

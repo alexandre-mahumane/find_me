@@ -26,6 +26,6 @@ public class RestaurantsOwners {
 
     @OneToOne
     @JoinColumn(nullable = false, name = "user_id")
-    private User userId;
+    private User user;
 
 }

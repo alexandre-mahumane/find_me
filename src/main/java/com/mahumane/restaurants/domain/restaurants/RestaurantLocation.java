@@ -32,5 +32,5 @@ public class RestaurantLocation {
 
     @OneToOne
     @JoinColumn(name = "restaurant_variant_id" , nullable = false)
-    private  RestaurantVariants restaurantVariantsId;
+    private  RestaurantVariants restaurantVariants;
 }

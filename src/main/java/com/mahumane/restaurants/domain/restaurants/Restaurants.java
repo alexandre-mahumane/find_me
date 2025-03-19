@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "restaurants")
 @Setter
@@ -26,9 +28,9 @@ public class Restaurants {
     private  String description;
 
     @Column(nullable = false)
-    private  String category;
+    private List<String> category;
 
     @OneToOne
     @JoinColumn(name = "owner_id", nullable = false)
-    private RestaurantsOwners restaurantsOwnersId;
+    private RestaurantsOwners restaurantsOwners;
 }
