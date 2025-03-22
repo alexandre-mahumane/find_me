@@ -5,6 +5,7 @@ import com.mahumane.restaurants.domain.restaurants.Menu;
 import com.mahumane.restaurants.domain.restaurants.RestaurantVariants;
 import com.mahumane.restaurants.dto.request.RestaurantMenuRequestDto;
 import com.mahumane.restaurants.dto.response.RestaurantMenuResponseDto;
+import com.mahumane.restaurants.exception.BadRequestException;
 import com.mahumane.restaurants.exception.ConflictException;
 import com.mahumane.restaurants.exception.NotFoundException;
 import com.mahumane.restaurants.repository.RestaurantMenuRepository;
@@ -153,16 +154,19 @@ public class RestaurantMenuService {
 
         var restaurantsVariants = this.restaurantVariantRepository.findRestaurantVariantByRestaurantId(restaurant.getId());
 
-        //Mudar as exceptions para esses coisas
+
         if (restaurantsVariants == null){
             throw new NotFoundException("Restaurants variant not found");
         }
         var menu = this.restaurantMenuRepository.findById(menuId).orElseThrow(()-> new NotFoundException("Menu not found"));
 
-        var result = menu.getRestaurantVariants().stream().filter((item)-> item.getId() == restaurantsVariants.getFirst().getId()).count();
+        var result = menu.getRestaurantVariants().stream()
+                .filter(
+                        (item)->
+                                item.getId() == restaurantsVariants.getFirst().getId()).count();
 
         if (result == 0){
-            throw new NotFoundException("Restaurants are not associate are this menu");
+            throw new BadRequestException("Restaurants are not associate are this menu");
         }
 
         menu.setPrice(dto.price());
@@ -199,16 +203,18 @@ public class RestaurantMenuService {
 
         var restaurantsVariants = this.restaurantVariantRepository.findRestaurantVariantByRestaurantId(restaurant.getId());
 
-        //Mudar as exceptions para esses coisas
+
         if (restaurantsVariants == null){
             throw new NotFoundException("Restaurants variant not found");
         }
         var menu = this.restaurantMenuRepository.findById(menuId).orElseThrow(()-> new NotFoundException("Menu not found"));
 
-        var result = menu.getRestaurantVariants().stream().filter((item)-> item.getId() == restaurantsVariants.getFirst().getId()).count();
+        var result = menu.getRestaurantVariants().stream()
+                .filter(
+                        (item)-> item.getId() == restaurantsVariants.getFirst().getId()).count();
 
         if (result == 0){
-            throw new NotFoundException("Restaurants are not associate are this menu");
+            throw new BadRequestException("Restaurants are not associate are this menu");
         }
 
         this.restaurantMenuRepository.delete(menu);
