@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "restaurant_menu")
 @Setter
@@ -30,7 +32,7 @@ public class Menu {
     @Column(name = "imageLink")
     private  String imageLink;
 
-    @OneToOne
+    @OneToMany
     @JoinColumn(name = "restaurant_variant_id", nullable = false)
-    private  RestaurantVariants restaurantVariants;
+    private Set<RestaurantVariants> restaurantVariants;
 }

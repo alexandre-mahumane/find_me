@@ -5,9 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface RestaurantVariantRepository extends JpaRepository<RestaurantVariants, Long> {
    Optional<RestaurantVariants> findRestaurantVariantByName(String name);
 
     List<RestaurantVariants> findAllByRestaurantId(long id);
+    Set<RestaurantVariants> findAllById(Set<Long> id);
+    List<RestaurantVariants> findRestaurantVariantByRestaurantId(Long id);
 }

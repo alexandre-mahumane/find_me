@@ -1,12 +1,15 @@
 package com.mahumane.restaurants.service;
 
+import com.mahumane.restaurants.domain.restaurants.Menu;
 import com.mahumane.restaurants.domain.restaurants.RestaurantLocation;
 import com.mahumane.restaurants.domain.restaurants.RestaurantVariants;
 import com.mahumane.restaurants.dto.request.RestaurantVariantRequestDto;
 import com.mahumane.restaurants.dto.response.RestaurantLocationResponseDto;
+import com.mahumane.restaurants.dto.response.RestaurantMenuResponseDto;
 import com.mahumane.restaurants.dto.response.RestaurantVariantResponseDto;
 import com.mahumane.restaurants.exception.ConflictException;
 import com.mahumane.restaurants.exception.NotFoundException;
+import com.mahumane.restaurants.repository.RestaurantMenuRepository;
 import com.mahumane.restaurants.repository.RestaurantRepository;
 import com.mahumane.restaurants.repository.RestaurantVariantRepository;
 import com.mahumane.restaurants.repository.UserRepository;
@@ -25,9 +28,12 @@ public class RestaurantVariantService {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final RestaurantLocationService restaurantLocationService;
+    private final RestaurantMenuRepository restaurantMenuRepository;
 
     public List<RestaurantVariantResponseDto> showAll(){
         List<RestaurantVariants> restaurantVariants = this.restaurantVariantRepository.findAll();
+
+        List<Menu> menus = this.restaurantMenuRepository.findAllMenuByRestaurantVariant(restaurantVariants);
 
         return restaurantVariants.stream().map(
                 (item)->
@@ -35,6 +41,14 @@ public class RestaurantVariantService {
                                 item.getName(),
                                 item.getType(),
                                 item.getImageLink(),
+                                menus.stream().map(
+                                        (menu)->
+                                                new RestaurantMenuResponseDto(
+                                                        menu.getName(),
+                                                        menu.getPrice(),
+                                                        menu.getCategory(),
+                                                        menu.getImageLink())
+                                ).collect(Collectors.toSet()),
                                 new RestaurantLocationResponseDto(
                                         item.getLocation().getCity(),
                                         item.getLocation().getAvenue(),
@@ -62,12 +76,22 @@ public class RestaurantVariantService {
         List<RestaurantVariants> restaurantVariants = this.restaurantVariantRepository
                 .findAllByRestaurantId(restaurant.getId());
 
+        List<Menu> menus = this.restaurantMenuRepository.findAllMenuByRestaurantVariant(restaurantVariants);
+
         return restaurantVariants.stream().map(
                 (item)->
                         new RestaurantVariantResponseDto(
                                 item.getName(),
                                 item.getType(),
                                 item.getImageLink(),
+                                menus.stream().map(
+                                        (menu)->
+                                                new RestaurantMenuResponseDto(
+                                                        menu.getName(),
+                                                        menu.getPrice(),
+                                                        menu.getCategory(),
+                                                        menu.getImageLink())
+                                ).collect(Collectors.toSet()),
                                 new RestaurantLocationResponseDto(
                                         item.getLocation().getCity(),
                                         item.getLocation().getAvenue(),
