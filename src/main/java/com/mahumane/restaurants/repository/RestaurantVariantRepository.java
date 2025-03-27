@@ -13,4 +13,8 @@ public interface RestaurantVariantRepository extends JpaRepository<RestaurantVar
     List<RestaurantVariants> findAllByRestaurantId(long id);
     Set<RestaurantVariants> findAllById(Set<Long> id);
     List<RestaurantVariants> findRestaurantVariantByRestaurantId(Long id);
+
+ Set<RestaurantVariants> findRestaurantVariantsByIdAndRestaurantId(Set<Long> restaurantVariantId, Long id);
+    RestaurantVariants findRestaurantVariantsByIdAndRestaurantId(Long restaurantVariantId, Long id);
+
 }

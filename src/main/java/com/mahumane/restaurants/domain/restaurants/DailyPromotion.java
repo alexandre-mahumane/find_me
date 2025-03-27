@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "restaurant_daily_promotion")
 @Setter
@@ -23,7 +25,11 @@ public class DailyPromotion {
 
     @ManyToOne
     @JoinColumn(name = "restaurant_variant_id", nullable = false)
-    private RestaurantVariants restaurantVariants;
+    private Set<RestaurantVariants> restaurantVariants;
+
+    private String description;
+
+    private Boolean status = true;
 
     @OneToOne
     @JoinColumn(name = "menu_id", nullable = false)

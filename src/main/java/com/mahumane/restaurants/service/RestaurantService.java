@@ -27,6 +27,7 @@ public class RestaurantService {
         var restaurants = this.restaurantRepository.findAll();
         return restaurants.stream().map(
                 (item)-> new RestaurantResponseDto(
+                        item.getId(),
                         item.getName(),
                         item.getDescription(),
                         item.getCategory(),
@@ -42,6 +43,7 @@ public class RestaurantService {
         );
 
         return new RestaurantResponseDto(
+                restaurant.getId(),
                 restaurant.getName(),
                 restaurant.getDescription(),
                 restaurant.getCategory(),
@@ -76,11 +78,11 @@ public class RestaurantService {
     @Transactional
     public void register(RestaurantRequestDto dto){
         var checkRestaurantName = this.restaurantRepository.findRestaurantByName(dto.name());
-        var owner = this.ownerRepository.findOwnerById(1L);
+        var owner = this.ownerRepository.findOwnerById(1L).orElseThrow(
+                ()-> new NotFoundException("Owner not found"));
 
         if (checkRestaurantName.isPresent()) throw  new ConflictException("Restaurant name is already exist");
 
-        if (owner == null) throw  new NotFoundException("Owner not found");
 
         Restaurants restaurant = new Restaurants();
 

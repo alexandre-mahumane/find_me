@@ -38,12 +38,14 @@ public class RestaurantVariantService {
         return restaurantVariants.stream().map(
                 (item)->
                         new RestaurantVariantResponseDto(
+                                item.getId(),
                                 item.getName(),
                                 item.getType(),
                                 item.getImageLink(),
                                 menus.stream().map(
                                         (menu)->
                                                 new RestaurantMenuResponseDto(
+                                                        menu.getId(),
                                                         menu.getName(),
                                                         menu.getPrice(),
                                                         menu.getCategory(),
@@ -81,12 +83,14 @@ public class RestaurantVariantService {
         return restaurantVariants.stream().map(
                 (item)->
                         new RestaurantVariantResponseDto(
+                                item.getId(),
                                 item.getName(),
                                 item.getType(),
                                 item.getImageLink(),
                                 menus.stream().map(
                                         (menu)->
                                                 new RestaurantMenuResponseDto(
+                                                        menu.getId(),
                                                         menu.getName(),
                                                         menu.getPrice(),
                                                         menu.getCategory(),

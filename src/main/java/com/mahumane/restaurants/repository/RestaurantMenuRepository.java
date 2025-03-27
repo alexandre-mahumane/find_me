@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface RestaurantMenuRepository extends JpaRepository<Menu, Long> {
@@ -13,4 +15,5 @@ public interface RestaurantMenuRepository extends JpaRepository<Menu, Long> {
     List<Menu> findAllMenuByRestaurantVariant(List<RestaurantVariants> restaurantVariants);
     List<Menu> findAllMenuByRestaurantVariantId(Long id);
 
+    Optional<Menu> findByIdAndRestaurantVariantId(Set<Long> restaurantVariantId, Long menuContentId);
 }

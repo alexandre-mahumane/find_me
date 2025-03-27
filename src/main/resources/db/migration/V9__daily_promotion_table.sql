@@ -2,6 +2,8 @@ CREATE TABLE restaurant_daily_promotion (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     discount_percentage DECIMAL(10,2) NOT NULL,
     menu_id BIGINT NOT NULL,
+    description VARCHAR(255),
+    status VARCHAR(20)
     restaurant_variant_id BIGINT NOT NULL,
 
 

@@ -26,6 +26,7 @@ public class AdmService {
 
         return administrators.stream().map(
                 (item) -> new UserResponseDto(
+                        item.getUser().getId(),
                         item.getUser().getUsername(),
                         item.getUser().getEmail()))
                 .collect(Collectors.toList());

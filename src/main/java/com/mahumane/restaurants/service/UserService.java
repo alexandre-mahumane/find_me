@@ -31,6 +31,7 @@ public class UserService {
         return users.stream()
                 .map((item)->
                         new UserResponseDto(
+                                item.getId(),
                                 item.getUsername(),
                                 item.getEmail()))
                 .collect(Collectors.toList());

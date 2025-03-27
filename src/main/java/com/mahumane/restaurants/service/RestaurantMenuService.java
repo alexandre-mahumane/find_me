@@ -33,6 +33,7 @@ public class RestaurantMenuService {
 
         return menus.stream().map(
                 (item)-> new RestaurantMenuResponseDto(
+                        item.getId(),
                         item.getName(),
                         item.getPrice(),
                         item.getCategory(),
@@ -72,6 +73,7 @@ public class RestaurantMenuService {
 
         return menus.stream().map(
                 (item)-> new RestaurantMenuResponseDto(
+                        item.getId(),
                         item.getName(),
                         item.getPrice(),
                         item.getCategory(),

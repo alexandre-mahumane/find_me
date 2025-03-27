@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 public record RestaurantVariantResponseDto(
+        Long id,
         String name,
         List<String> type,
         String imageLink,
