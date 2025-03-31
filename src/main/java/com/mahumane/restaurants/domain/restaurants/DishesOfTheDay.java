@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "restaurant_daily_promotion")
 @Setter
@@ -24,8 +26,10 @@ public class DishesOfTheDay {
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "restaurant_variant_id")
-    private RestaurantVariants restaurantVariants;
+    private Set<RestaurantVariants> restaurantVariants;
 
 }

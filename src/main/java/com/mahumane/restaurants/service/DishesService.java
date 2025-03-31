@@ -1,9 +1,9 @@
 package com.mahumane.restaurants.service;
 
-import com.mahumane.restaurants.domain.restaurants.DailyPromotion;
-import com.mahumane.restaurants.dto.request.DailyPromotionRequestDto;
-import com.mahumane.restaurants.dto.response.DailyPromotionResponseDto;
+import com.mahumane.restaurants.domain.restaurants.DishesOfTheDay;
+import com.mahumane.restaurants.dto.request.DishesOfTheDayRequestDto;
 import com.mahumane.restaurants.dto.response.DailyDishesResponseDto;
+import com.mahumane.restaurants.dto.response.DishesOfTheDayResponseDto;
 import com.mahumane.restaurants.dto.response.RestaurantMenuResponseDto;
 import com.mahumane.restaurants.exception.NotFoundException;
 import com.mahumane.restaurants.repository.*;
@@ -16,8 +16,9 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class DailyPromotionService {
-    private final DailyPromotionRepository dailyPromotionRepository;
+public class DishesService {
+    
+    private final DishesOfTheDayRepository dishesRepository;
     private final RestaurantMenuRepository menuRepository;
     private final RestaurantVariantRepository restaurantVariantRepository;
     private final UserRepository userRepository;
@@ -25,13 +26,12 @@ public class DailyPromotionService {
     private final RestaurantRepository restaurantRepository;
 
 
-    public List<DailyPromotionResponseDto> showAll(){
-        List<DailyPromotion> promotions = this.dailyPromotionRepository.findAll();
+    public List<DishesOfTheDayResponseDto> showAll(){
+        List<DishesOfTheDay> dish = this.dishesRepository.findAll();
 
-        return  promotions.stream().map(
-                        (item)-> new DailyPromotionResponseDto(
+        return  dish.stream().map(
+                        (item)-> new DishesOfTheDayResponseDto(
                                 item.getId(),
-                                item.getDiscountPercentage(),
                                 item.getDescription(),
                                 item.getRestaurantVariants().stream().map((restaurantVariants)->
                                                 new DailyDishesResponseDto(
@@ -53,7 +53,7 @@ public class DailyPromotionService {
     }
 
 
-    public List<DailyPromotionResponseDto> showAllByRestaurant(Long restaurantVariantId){
+    public List<DishesOfTheDayResponseDto> showAllByRestaurant(Long restaurantVariantId){
 
         var user = this.userRepository
                 .findById(1L)
@@ -69,12 +69,11 @@ public class DailyPromotionService {
         var restaurantVariant = this.restaurantVariantRepository
                 .findRestaurantVariantsByIdAndRestaurantId(restaurantVariantId,restaurant.getId());
 
-        List<DailyPromotion> promotions = this.dailyPromotionRepository.findAllByRestaurantVariant(restaurantVariant);
+        List<DishesOfTheDay> dish = this.dishesRepository.findAllByRestaurantVariant(restaurantVariant);
 
-        return  promotions.stream().map(
-                        (item)-> new DailyPromotionResponseDto(
+        return  dish.stream().map(
+                        (item)-> new DishesOfTheDayResponseDto(
                                 item.getId(),
-                                item.getDiscountPercentage(),
                                 item.getDescription(),
                                 item.getRestaurantVariants().stream().map((restaurantVariants)->
                                                 new DailyDishesResponseDto(
@@ -95,37 +94,35 @@ public class DailyPromotionService {
                 .collect(Collectors.toList());
     }
 
+    public DishesOfTheDayResponseDto showById(Long dishId){
 
+        DishesOfTheDay dish = this.dishesRepository.findById(dishId)
+                .orElseThrow(()-> new NotFoundException("dish not found"));
 
-    public DailyPromotionResponseDto showById(Long promotionId){
+        return  new DishesOfTheDayResponseDto(
+                dish.getId(),
 
-        DailyPromotion promotions = this.dailyPromotionRepository.findById(promotionId)
-                .orElseThrow(()-> new NotFoundException("Promotion not found"));
-
-        return  new DailyPromotionResponseDto(
-                                promotions.getId(),
-                promotions.getDiscountPercentage(),
-                promotions.getDescription(),
-                promotions.getRestaurantVariants().stream().map((restaurant)->
-                        new DailyDishesResponseDto(
-                                restaurant.getId(),
-                                restaurant.getName(),
-                                restaurant.getImageLink()))
+                dish.getDescription(),
+                dish.getRestaurantVariants().stream().map((restaurant)->
+                                new DailyDishesResponseDto(
+                                        restaurant.getId(),
+                                        restaurant.getName(),
+                                        restaurant.getImageLink()))
                         .collect(Collectors.toSet()),
-                                new RestaurantMenuResponseDto(
-                                        promotions.getMenu().getId(),
-                                        promotions.getMenu().getName(),
-                                        promotions.getMenu().getPrice(),
-                                        promotions.getMenu().getCategory(),
-                                        promotions.getMenu().getImageLink()
-                                )
+                new RestaurantMenuResponseDto(
+                        dish.getMenu().getId(),
+                        dish.getMenu().getName(),
+                        dish.getMenu().getPrice(),
+                        dish.getMenu().getCategory(),
+                        dish.getMenu().getImageLink()
+                )
 
-                        );
+        );
     }
 
 
     public void create(
-            DailyPromotionRequestDto dto,
+            DishesOfTheDayRequestDto dto,
             Long menuContentId,
             Set<Long> restaurantVariantId){
 
@@ -147,20 +144,20 @@ public class DailyPromotionService {
         var findMenuContent = this.menuRepository.findByIdAndRestaurantVariantId(restaurantVariantId, menuContentId)
                 .orElseThrow(()-> new NotFoundException("Menu content is not associate"));
 
-        DailyPromotion promotion = new DailyPromotion();
+        DishesOfTheDay dish = new DishesOfTheDay();
 
-        promotion.setDescription(dto.description());
-        promotion.setMenu(findMenuContent);
-        promotion.setDiscountPercentage(dto.discountPercentage());
-        promotion.setRestaurantVariants(findRestaurantVariant);
+        dish.setDescription(dto.description());
+        dish.setMenu(findMenuContent);
 
-        this.dailyPromotionRepository.save(promotion);
+        dish.setRestaurantVariants(findRestaurantVariant);
+
+        this.dishesRepository.save(dish);
     }
 
 
     public void update(
-            DailyPromotionRequestDto dto,
-            Long promotionId,
+            DishesOfTheDayRequestDto dto,
+            Long dishId,
             Set<Long> restaurantVariantId ){
 
         var user = this.userRepository
@@ -177,28 +174,30 @@ public class DailyPromotionService {
         var findRestaurantVariant  = this.restaurantVariantRepository
                 .findRestaurantVariantsByIdAndRestaurantId(restaurantVariantId,restaurant.getId());
 
-    var promotion = this.dailyPromotionRepository.findById(promotionId)
-            .orElseThrow(()-> new NotFoundException("Promotion not found"));
+        var dish = this.dishesRepository.findById(dishId)
+                .orElseThrow(()-> new NotFoundException("Dish not found"));
 
-        promotion.setDescription(dto.description());
-        promotion.setDiscountPercentage(dto.discountPercentage());
-        promotion.setRestaurantVariants(findRestaurantVariant);
+        var menu = this.menuRepository.findById(dto.menuId())
+                .orElseThrow(()-> new NotFoundException("Menu not found"));
+        dish.setDescription(dto.description());
 
-        this.dailyPromotionRepository.save(promotion);
+        dish.setMenu(menu);
+        dish.setRestaurantVariants(findRestaurantVariant);
+
+        this.dishesRepository.save(dish);
 
     }
 
-    public void remove(Long promotionId){
+    public void remove(Long dishId){
         var user = this.userRepository
                 .findById(1L)
                 .orElseThrow(
                         ()-> new NotFoundException("User not found")
                 );
         var owner = this.ownerRepository.findOwnerById(user.getId())
-            .orElseThrow(
-                ()-> new NotFoundException("Owner not found not found")
-        );
-
+                .orElseThrow(
+                        ()-> new NotFoundException("Owner not found not found")
+                );
 
         this.restaurantRepository.findRestaurantByOwnerId(owner.getId())
                 .orElseThrow(
@@ -206,12 +205,12 @@ public class DailyPromotionService {
                 );
 
 
-        var promotion = this.dailyPromotionRepository.findById(promotionId)
-                .orElseThrow(()-> new NotFoundException("Promotion not found"));
+        var dish = this.dishesRepository.findById(dishId)
+                .orElseThrow(()-> new NotFoundException("Dish not found"));
 
-//        if (promotion.getRestaurantVariants().)
+//        if (dish.getRestaurantVariants().)
 
-        this.dailyPromotionRepository.delete(promotion);
+        this.dishesRepository.delete(dish);
     }
 
 }
